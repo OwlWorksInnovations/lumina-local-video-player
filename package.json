@@ -1,7 +1,9 @@
 {
-  "name": "tidal-telescope",
+  "name": "lumina-player",
   "private": true,
   "version": "1.0.0",
+  "description": "Lumina - A premium offline player for your Udemy courses.",
+  "author": "OwlWorksInnovations",
   "type": "module",
   "scripts": {
     "dev": "vite",
