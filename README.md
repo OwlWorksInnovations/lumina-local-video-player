@@ -1,14 +1,15 @@
 # Lumina Player
 
-Lumina is a desktop offline video player designed for organized course viewing. It provides a youtube-like environment for playing local videos with automated organization and categorization.
+Lumina is a desktop offline video player designed for organized locally downloadedd udemy course viewing. It provides a youtube-like environment for playing local udemy videos with automated organization and categorization.
 
 ## Features
 
-- **Folder-Based Library**: Automatic organization of course files by selecting a root directory.
+- **Folder-Based Library**: Automatic organization of course files by selecting a root directory. (Udemy optimized)
 - **Categorization**: Support for tagging courses to manage content by subject or priority.
-- **Performance**: Built with Vite, Vue 3, and Electron for a responsive desktop interface.
+- **Performance**: Built with Vite, Vue 3, and Electron for a responsive desktop interface. (Runs fast on devices with a memory footprint of ~120mb)
 - **Aesthetics**: Dark-themed interface utilizing smooth transitions and modern design principles.
 - **Development**: Developed with TypeScript for type safety and maintainability.
+- **Portability**: Can run on anything that supports electron (Linux, Windows, Mac)
 
 ## Screenshots
 
