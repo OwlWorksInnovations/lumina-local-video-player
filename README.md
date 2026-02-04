@@ -6,6 +6,8 @@ Lumina is a desktop offline video player designed for organized locally download
 
 - **Folder-Based Library**: Automatic organization of course files by selecting a root directory. (Udemy optimized)
 - **Categorization**: Support for tagging courses to manage content by subject or priority.
+- **Progress**: Auto resumes progress from last video watch up to the second.
+- **Gamification**: Adds a github contribution graph and streak to keep you motovatied.
 - **Performance**: Built with Vite, Vue 3, and Electron for a responsive desktop interface. (Runs fast on devices with a memory footprint of ~120mb)
 - **Aesthetics**: Dark-themed interface utilizing smooth transitions and modern design principles.
 - **Development**: Developed with TypeScript for type safety and maintainability.
