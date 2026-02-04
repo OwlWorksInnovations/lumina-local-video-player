@@ -1,0 +1,123 @@
+import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { fileURLToPath } from 'node:url'
+import path from 'node:path'
+import fs from 'node:fs'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// The built directory structure
+//
+// ├─┬─┬ dist
+// │ │ └── index.html
+// │ │
+// │ ├─┬ dist-electron
+// │ │ ├── main.js
+// │ │ └── preload.mjs
+// │
+process.env.APP_ROOT = path.join(__dirname, '..')
+
+// 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
+export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
+export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
+export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
+
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
+
+let win: BrowserWindow | null
+
+function createWindow() {
+  win = new BrowserWindow({
+    icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.mjs'),
+      webSecurity: false,
+    },
+  })
+
+  // Test active push message to Renderer-process.
+  win.webContents.on('did-finish-load', () => {
+    win?.webContents.send('main-process-message', (new Date).toLocaleString())
+  })
+
+  if (VITE_DEV_SERVER_URL) {
+    win.loadURL(VITE_DEV_SERVER_URL)
+  } else {
+    // win.loadFile('dist/index.html')
+    win.loadFile(path.join(RENDERER_DIST, 'index.html'))
+  }
+}
+
+// Quit when all windows are closed, except on macOS. There, it's common
+// for applications and their menu bar to stay active until the user quits
+// explicitly with Cmd + Q.
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit()
+    win = null
+  }
+})
+
+app.on('activate', () => {
+  // On OS X it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow()
+  }
+})
+
+app.whenReady().then(createWindow)
+
+// IPC Handlers
+ipcMain.handle('select-folder', async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog({
+    properties: ['openDirectory']
+  })
+  if (canceled) {
+    return null
+  } else {
+    return filePaths[0]
+  }
+})
+
+ipcMain.handle('list-videos', async (_event, folderPath: string) => {
+  const videoExtensions = ['.mp4', '.mkv', '.webm', '.avi', '.mov']
+
+  const scanDirectory = (dir: string): any[] => {
+    const results: any[] = []
+    const list = fs.readdirSync(dir)
+
+    list.forEach(file => {
+      const filePath = path.join(dir, file)
+      const stat = fs.statSync(filePath)
+
+      if (stat && stat.isDirectory()) {
+        const children = scanDirectory(filePath)
+        if (children.length > 0) {
+          results.push({
+            name: file,
+            type: 'directory',
+            path: filePath,
+            children
+          })
+        }
+      } else {
+        const ext = path.extname(file).toLowerCase()
+        if (videoExtensions.includes(ext)) {
+          results.push({
+            name: file,
+            type: 'video',
+            path: filePath
+          })
+        }
+      }
+    })
+
+    return results.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }))
+  }
+
+  return scanDirectory(folderPath)
+})
+
+ipcMain.on('open-explorer', (_event, folderPath: string) => {
+  shell.openPath(path.dirname(folderPath))
+})

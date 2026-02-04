@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Tidal Telescope - Premium Video Course Player</title>
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+
+<body>
+  <div id="app">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>TIDAL TELESCOPE</h1>
+      </div>
+      <div class="sidebar-content" id="course-list">
+        <!-- Course structure will be injected here -->
+        <div class="welcome-msg" style="padding: 20px; color: var(--text-dim); font-size: 0.9rem;">
+          Select a folder to start your course.
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main View -->
+    <main class="main-view">
+      <header class="top-bar" id="library-header" style="display:none;">
+        <div class="folder-path" id="current-folder">No folder selected</div>
+      </header>
+
+      <section class="content-container" id="main-content">
+        <div class="welcome-screen fade-in">
+          <h2 class="hero-title">Your Learning Hub</h2>
+          <p style="color: var(--text-dim); margin-bottom: 24px;">Organized, focused, and tracks your progress
+            automatically.</p>
+          <button class="primary-btn" id="start-btn">Select Course Folder</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Tagging Modal -->
+  <div id="tag-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-content">
+      <h3>Add Course Category</h3>
+      <p id="modal-course-name" style="color: var(--text-dim); margin-bottom: 20px; font-size: 0.85rem;"></p>
+      <input type="text" id="tag-input" class="search-input" placeholder="e.g. Frontend, Math, Art..." autofocus>
+      <div style="display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end;">
+        <button class="secondary-btn" id="modal-cancel">Cancel</button>
+        <button class="primary-btn" id="modal-save">Save Category</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
