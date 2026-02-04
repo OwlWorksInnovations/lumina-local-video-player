@@ -1,6 +1,6 @@
 # Lumina Player
 
-Lumina is a desktop offline video player designed for organized course viewing. It provides a distraction-free environment for playing local video content with automated organization and categorization.
+Lumina is a desktop offline video player designed for organized course viewing. It provides a youtube-like environment for playing local videos with automated organization and categorization.
 
 ## Features
 
@@ -25,8 +25,8 @@ Lumina is a desktop offline video player designed for organized course viewing. 
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
-- npm
+- Node.js (v24 or higher) (recommended)
+- npm (11.6.2 or higher) (recommended)
 
 ### Installation
 
@@ -53,8 +53,6 @@ To generate a standalone executable:
 ```bash
 npm run build
 ```
-
-Production artifacts are located in the `release/` directory. For Windows MSI generation, refer to the WiX project configuration.
 
 ## Contributing
 
