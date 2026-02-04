@@ -1,7 +1,8 @@
+import { getLocalDateStr, formatTitle, calculateStreak, getFlattenedVideos } from './utils'
+
 // @ts-ignore
 const { selectFolder, listVideos, openExplorer } = (window as any).ipcRenderer
 
-let rootFolder: string | null = null
 let courses: any[] = []
 let currentCourse: any = null
 let flattenedVideos: any[] = []
@@ -22,23 +23,6 @@ const currentFolderDisplay = document.getElementById('current-folder')!
 const courseList = document.getElementById('course-list')!
 const mainContent = document.getElementById('main-content')!
 
-// Utilities
-function getLocalDateStr(): string {
-  return new Date().toLocaleDateString('en-CA') // YYYY-MM-DD
-}
-
-function formatTitle(str: string): string {
-  // Remove "Udemy - " and handle delimiters
-  let clean = str.replace(/^Udemy\s*-\s*/i, '')
-  clean = clean.replace(/[_-]/g, ' ')
-  clean = clean.replace(/,/g, ' ')
-
-  // Title Case
-  return clean.split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ')
-    .trim()
-}
 
 async function loadCustomCSS(rootPath: string) {
   // This assumes we have an IPC call to check if file exists and read it
@@ -131,7 +115,6 @@ async function handleSelectFolder() {
 }
 
 async function loadLibrary(folderPath: string) {
-  rootFolder = folderPath
   localStorage.setItem('lastFolder', folderPath)
   currentFolderDisplay.textContent = folderPath
 
@@ -167,7 +150,7 @@ function renderSidebarHeader(isLibrary: boolean) {
 }
 
 function renderLibrary() {
-  const streak = calculateStreak()
+  const streak = calculateStreak(watchHistory)
   checkAchievements('streak', streak)
   mainContent.innerHTML = `
     <div class="main-container fade-in">
@@ -340,14 +323,6 @@ async function getThumbnail(videoPath: string): Promise<string | null> {
   })
 }
 
-function getFlattenedVideos(items: any[]): any[] {
-  let results: any[] = []
-  items.forEach(item => {
-    if (item.type === 'video') results.push(item)
-    if (item.children) results = results.concat(getFlattenedVideos(item.children))
-  })
-  return results
-}
 
 function renderCourse(course: any) {
   courseList.innerHTML = ''
@@ -560,7 +535,7 @@ function markAsCompleted(path: string) {
 
 function renderAnalytics() {
   app.classList.add('sidebar-hidden')
-  const streak = calculateStreak()
+  const streak = calculateStreak(watchHistory)
   checkAchievements('streak', streak)
   const totalLessons = Object.keys(progress).filter(k => progress[k].completed).length
 
@@ -606,38 +581,6 @@ function renderAnalytics() {
   renderContributionGraph()
 }
 
-function calculateStreak(): number {
-  const dates = Object.keys(watchHistory).sort().reverse()
-  if (dates.length === 0) return 0
-
-  let streak = 0
-  let current = new Date()
-  current.setHours(0, 0, 0, 0)
-
-  // Check if they did something today or yesterday
-  const todayStr = getLocalDateStr()
-  let checkDate = new Date(current)
-
-  if (!watchHistory[todayStr]) {
-    checkDate.setDate(checkDate.getDate() - 1)
-    const yesterdayStr = checkDate.toLocaleDateString('en-CA')
-    if (!watchHistory[yesterdayStr]) return 0
-  }
-
-  // We start checking from the most recent active date
-  let streakDate = new Date(watchHistory[todayStr] ? current : checkDate)
-
-  while (true) {
-    const dateStr = streakDate.toLocaleDateString('en-CA')
-    if (watchHistory[dateStr]) {
-      streak++
-      streakDate.setDate(streakDate.getDate() - 1)
-    } else {
-      break
-    }
-  }
-  return streak
-}
 
 function openTagModal(course: any) {
   const modal = document.getElementById('tag-modal')!

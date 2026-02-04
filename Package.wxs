@@ -1,0 +1,26 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Lumina Player" Manufacturer="OwlWorksInnovations" Version="1.0.0" UpgradeCode="55f0ebee-2a6b-41d7-b6f8-16989e9b86ba">
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Lumina Player" />
+    </StandardDirectory>
+
+    <Feature Id="Main">
+      <ComponentGroupRef Id="LuminaAppComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+    </Feature>
+
+    <!-- Create a shortcut component manually since Heat typically handles files -->
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="ApplicationShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut" Directory="ProgramMenuFolder" Name="Lumina Player" Target="[INSTALLFOLDER]Lumina Player.exe" WorkingDirectory="INSTALLFOLDER" Icon="LuminaPlayerIcon.exe" />
+        <RegistryValue Root="HKCU" Key="Software\OwlWorksInnovations\Lumina Player" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <Icon Id="LuminaPlayerIcon.exe" SourceFile="release\1.0.0\win-unpacked\Lumina Player.exe" />
+    <StandardDirectory Id="ProgramMenuFolder" />
+
+  </Package>
+</Wix>

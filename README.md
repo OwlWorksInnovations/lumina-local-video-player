@@ -1,18 +1,65 @@
-# Vue 3 + TypeScript + Vite
+# Lumina Player
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Lumina is a desktop offline video player designed for organized course viewing. It provides a distraction-free environment for playing local video content with automated organization and categorization.
 
-## Recommended IDE Setup
+## Features
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- **Folder-Based Library**: Automatic organization of course files by selecting a root directory.
+- **Categorization**: Support for tagging courses to manage content by subject or priority.
+- **Performance**: Built with Vite, Vue 3, and Electron for a responsive desktop interface.
+- **Aesthetics**: Dark-themed interface utilizing smooth transitions and modern design principles.
+- **Development**: Developed with TypeScript for type safety and maintainability.
 
-## Type Support For `.vue` Imports in TS
+## Screenshots
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### Library View
+![Library View](screenshots/library_view.png)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### Video Playback
+![Video Player](screenshots/player_video.png)
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### Video Explorer
+![Player Start](screenshots/player_start.png)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/OwlWorksInnovations/lumina-player.git
+   cd lumina-player
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run development mode:
+   ```bash
+   npm run dev
+   ```
+
+## Building for Production
+
+To generate a standalone executable:
+
+```bash
+npm run build
+```
+
+Production artifacts are located in the `release/` directory. For Windows MSI generation, refer to the WiX project configuration.
+
+## Contributing
+
+Contributions are welcome. Please open an issue or submit a pull request for improvements.
+
+## License
+
+This project is licensed under the MIT License.

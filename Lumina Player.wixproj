@@ -1,0 +1,21 @@
+<Project Sdk="WixToolset.Sdk/5.0.0">
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);node_modules\**;dist\**;dist-electron\**;release\**;e2e\**</DefaultItemExcludes>
+    <HarvestPath>$(MSBuildProjectDirectory)\release\1.0.0\win-unpacked</HarvestPath>
+    <HarvestPath>$(MSBuildProjectDirectory)\release\1.0.0\win-unpacked</HarvestPath>
+    <DefineConstants>HarvestPath=$(HarvestPath)</DefineConstants>
+    <InstallerPlatform>x64</InstallerPlatform>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Heat" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <HarvestDirectory Include="$(HarvestPath)">
+      <ComponentGroupName>LuminaAppComponents</ComponentGroupName>
+      <DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+      <SuppressRootDirectory>true</SuppressRootDirectory>
+      <SuppressRegistry>true</SuppressRegistry>
+      <PreprocessorVariable>var.HarvestPath</PreprocessorVariable>
+    </HarvestDirectory>
+  </ItemGroup>
+</Project>

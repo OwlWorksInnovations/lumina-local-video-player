@@ -1,9 +1,9 @@
 // @see - https://www.electron.build/configuration/configuration
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "YourAppID",
+  "appId": "com.owlworks.lumina",
   "asar": true,
-  "productName": "YourAppName",
+  "productName": "Lumina Player",
   "directories": {
     "output": "release/${version}"
   },
@@ -20,13 +20,15 @@
   "win": {
     "target": [
       {
-        "target": "nsis",
+        "target": "zip",
         "arch": [
           "x64"
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-${version}-Setup.${ext}",
+    "verifyUpdateCodeSignature": false,
+    "signAndEditExecutable": false
   },
   "nsis": {
     "oneClick": false,
